@@ -5,21 +5,17 @@ import tempfile
 import streamlit as st
 from typing import List, Tuple, Optional
 
-# --- LangChain / RAG ---
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
 
-# LLM seçenekleri
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-# Yükleyiciler
 from langchain_community.document_loaders import PyPDFLoader, TextLoader, Docx2txtLoader
 from langchain_ollama.chat_models import ChatOllama
-# Basit OCR (opsiyonel) – resimlerden metin çekmek için
-# tesseract kurulu olmalıysa iptal edebilirsiniz. (brew install tesseract)
+
 try:
     import pytesseract
     from PIL import Image
@@ -33,7 +29,6 @@ UPLOAD_DIR = "./data/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(INDEX_DIR), exist_ok=True)
 
-# ---------------------- UI ----------------------
 st.set_page_config(page_title=f"🎼 {APP_NAME} – RAG Chat", layout="wide")
 st.title(f"🎼 {APP_NAME}")
 st.caption("📚 Dosya/Resim yükle, indeksle ve RAG ile sorular sor.")
@@ -66,7 +61,6 @@ with st.sidebar:
         except Exception as e:
             st.error(f"Silinirken hata: {e}")
 
-# ---------------------- Yardımcılar ----------------------
 def load_llm() -> object:
         return ChatOllama(model="gpt-oss:20b", temperature=0.0)
 
@@ -139,7 +133,6 @@ def build_or_update_index(all_docs: List[Document], chunk_size=1200, chunk_overl
             vs.save_local(INDEX_DIR)
             return vs
         except Exception:
-            # bozuksa yeniden kur
             pass
 
     vs = FAISS.from_documents(chunks, embeddings)
@@ -186,7 +179,6 @@ def render_sources(docs: List[Document]):
         src = d.metadata.get("source", "bilinmiyor")
         st.write(f"[{i}] {src}")
 
-# ---------------------- Dosya Yükleme / İndeksleme ----------------------
 st.subheader("📥 Dosya/Resim Yükle")
 uploads = st.file_uploader(
     "PDF, TXT, DOCX, PNG, JPG ekleyebilirsin (birden fazla seç)",
@@ -214,12 +206,10 @@ with col_b:
 
 st.markdown("---")
 
-# ---------------------- Chat ----------------------
 st.subheader("💬 Soru Sor (RAG)")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Mesajları göster
 for role, content in st.session_state.messages:
     with st.chat_message(role):
         st.markdown(content)
