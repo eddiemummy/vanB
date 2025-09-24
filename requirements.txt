@@ -1,0 +1,20 @@
+streamlit
+langchain
+langchain-community
+langchain-openai
+langchain-google-genai
+langchain-ollama
+
+# Embeddings ve modeller
+sentence-transformers
+transformers
+torch
+torchvision
+torchaudio
+
+# Doküman yükleyiciler
+pypdf
+python-docx
+pillow
+pytesseract
+faiss-cpu

@@ -1,0 +1,39 @@
+# ---- Python genel ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+pip-wheel-metadata/
+
+# Sanal ortamlar
+.venv/
+venv/
+env/
+
+# Log ve geçici dosyalar
+*.log
+*.tmp
+*.swp
+
+# macOS
+.DS_Store
+
+# IDE/Editor
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/
+.streamlit/secrets.toml
+
+# Ortam değişkenleri
+.env
+.env.*
+
+# ---- Projeye özgü ----
+# Uygulama çalışınca oluşan veri ve indeksler
+data/
+data/**
+!data/.gitkeep
